@@ -1,0 +1,1588 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "SmartComex integrations API",
+        "title": "SmartComex API",
+        "termsOfService": "https://smartcomex.io/pt-br/termos-de-uso/",
+        "contact": {
+            "name": "Support",
+            "email": "support@smartcomex.io"
+        },
+        "version": "0.0.1"
+    },
+    "host": "api.smartcomex.io",
+    "basePath": "/v1",
+    "paths": {
+        "/contacts": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "contact:read"
+                        ]
+                    }
+                ],
+                "description": "Get a list of contacts",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Contact"
+                ],
+                "summary": "Contact list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Office code",
+                        "name": "office_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 10,
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 0,
+                        "type": "integer",
+                        "default": 0,
+                        "example": 0,
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Contact"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/fromtos": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "fromto:read"
+                        ]
+                    }
+                ],
+                "description": "Get a list of FromTo conversions",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "FromTo"
+                ],
+                "summary": "FromTo list",
+                "parameters": [
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 10,
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 0,
+                        "type": "integer",
+                        "default": 0,
+                        "example": 0,
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/FromTo"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/offices": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "office:read"
+                        ]
+                    }
+                ],
+                "description": "Get a list of offices",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Office"
+                ],
+                "summary": "Offices list",
+                "parameters": [
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 10,
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 0,
+                        "type": "integer",
+                        "default": 0,
+                        "example": 0,
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Office"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/offices/internal": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "office:read"
+                        ]
+                    }
+                ],
+                "description": "Get a list of organization offices",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Office"
+                ],
+                "summary": "Organization's offices list",
+                "parameters": [
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 10,
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 0,
+                        "type": "integer",
+                        "default": 0,
+                        "example": 0,
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Office"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/offices/{office_code}": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "office:read"
+                        ]
+                    }
+                ],
+                "description": "Get a office by office code",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Office"
+                ],
+                "summary": "Retrieve a office",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Office code.",
+                        "name": "office_code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Office"
+                        }
+                    }
+                }
+            }
+        },
+        "/process_request": {
+            "put": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process_request:write"
+                        ]
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process Request"
+                ],
+                "summary": "Add a process update request",
+                "parameters": [
+                    {
+                        "description": "Process update request",
+                        "name": "request_body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProcessRequestPutInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ProcessRequestResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process_request:write"
+                        ]
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process Request"
+                ],
+                "summary": "Add a process creation request",
+                "parameters": [
+                    {
+                        "description": "Process creation request",
+                        "name": "request_body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProcessRequestPostInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ProcessRequestResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/process_requests/{idRequest}": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process_request:read"
+                        ]
+                    }
+                ],
+                "description": "Get a process request information by idRequest",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process Request"
+                ],
+                "summary": "Retrieve a process creation/update request",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Request unique identifier",
+                        "name": "idRequest",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ProcessRequestResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/processes": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:read"
+                        ]
+                    }
+                ],
+                "description": "Get a process by process code",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process"
+                ],
+                "summary": "Processes list",
+                "parameters": [
+                    {
+                        "enum": [
+                            "NONE",
+                            "ONE",
+                            "HOUSE",
+                            "MANY",
+                            "PARTLOT"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "ConsolidationTypeNone",
+                            "ConsolidationTypeOne",
+                            "ConsolidationTypeHouse",
+                            "ConsolidationTypeMany",
+                            "ConsolidationTypePartlot"
+                        ],
+                        "description": "Consolidation type.",
+                        "name": "consolidation_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Currency.",
+                        "name": "currency",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Freight type.",
+                        "name": "freight_type",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "DEFERRED",
+                            "NOTREQUIRED",
+                            "REFUSED",
+                            "AWAITING_CONFIRMATION"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "ImportLicenseTypeDeferred",
+                            "ImportLicenseTypeNotRequired",
+                            "ImportLicenseTypeRefused",
+                            "ImportLicenseTypeAwaitingConfirmation"
+                        ],
+                        "description": "Import license type.",
+                        "name": "import_license_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Incoterm.",
+                        "name": "incoterm",
+                        "in": "query"
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 10,
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "AIR",
+                            "SEA",
+                            "GROUND",
+                            "COURIER",
+                            "SERVICE",
+                            "MULTIMODAL"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "ProcessModalityTypeAir",
+                            "ProcessModalityTypeSea",
+                            "ProcessModalityTypeGround",
+                            "ProcessModalityTypeCourier",
+                            "ProcessModalityTypeService",
+                            "ProcessModalityTypeMultimodal"
+                        ],
+                        "description": "Modality type.",
+                        "name": "modality_type",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Office code.",
+                        "name": "office_code",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 0,
+                        "type": "integer",
+                        "default": 0,
+                        "example": 0,
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "IMPORT",
+                            "EXPORT",
+                            "OTHER",
+                            "NATIONAL"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "ProcessOperationTypeImport",
+                            "ProcessOperationTypeExport",
+                            "ProcessOperationTypeOther",
+                            "ProcessOperationTypeNational"
+                        ],
+                        "description": "Operation type.",
+                        "name": "operation_type",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "PP",
+                            "CC"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "PrePaidCollectTypePrePaid",
+                            "PrePaidCollectTypeCollect"
+                        ],
+                        "description": "PrePaid/Collect",
+                        "name": "ppcc_type",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "OPENED",
+                            "CANCELLED",
+                            "DELETED",
+                            "FINISHED"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "ProcessStatusOpened",
+                            "ProcessStatusCancelled",
+                            "ProcessStatusDeleted",
+                            "ProcessStatusFinished"
+                        ],
+                        "description": "Process status.",
+                        "name": "process_status",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Process"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/processes/{process_code}": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:read"
+                        ]
+                    }
+                ],
+                "description": "Get a process by process code",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process"
+                ],
+                "summary": "Retrieve a process",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "ORGCODE-IS99010001",
+                        "description": "Process code.",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Process"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "ConsolidationTypeEnum": {
+            "type": "string",
+            "enum": [
+                "NONE",
+                "ONE",
+                "HOUSE",
+                "MANY",
+                "PARTLOT"
+            ],
+            "x-enum-varnames": [
+                "ConsolidationTypeNone",
+                "ConsolidationTypeOne",
+                "ConsolidationTypeHouse",
+                "ConsolidationTypeMany",
+                "ConsolidationTypePartlot"
+            ]
+        },
+        "Contact": {
+            "type": "object",
+            "properties": {
+                "contact_id": {
+                    "type": "string"
+                },
+                "contact_name": {
+                    "type": "string"
+                },
+                "office_code": {
+                    "type": "string"
+                }
+            }
+        },
+        "FromTo": {
+            "type": "object",
+            "properties": {
+                "entity": {
+                    "type": "string",
+                    "example": "Office"
+                },
+                "field": {
+                    "type": "string",
+                    "example": "office_code"
+                },
+                "partner_value": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "smart_value": {
+                    "type": "string",
+                    "example": "abcdef"
+                }
+            }
+        },
+        "ImportLicenseTypeEnum": {
+            "type": "string",
+            "enum": [
+                "DEFERRED",
+                "NOTREQUIRED",
+                "REFUSED",
+                "AWAITING_CONFIRMATION"
+            ],
+            "x-enum-varnames": [
+                "ImportLicenseTypeDeferred",
+                "ImportLicenseTypeNotRequired",
+                "ImportLicenseTypeRefused",
+                "ImportLicenseTypeAwaitingConfirmation"
+            ]
+        },
+        "Office": {
+            "type": "object",
+            "properties": {
+                "office_code": {
+                    "type": "string"
+                },
+                "office_name": {
+                    "type": "string"
+                }
+            }
+        },
+        "PrePaidCollectTypeEnum": {
+            "type": "string",
+            "enum": [
+                "PP",
+                "CC"
+            ],
+            "x-enum-varnames": [
+                "PrePaidCollectTypePrePaid",
+                "PrePaidCollectTypeCollect"
+            ]
+        },
+        "Process": {
+            "type": "object",
+            "properties": {
+                "agent_id": {
+                    "description": "Agent - Office Code",
+                    "type": "string"
+                },
+                "agent_remittance_contact_id": {
+                    "type": "string"
+                },
+                "agent_remittance_id": {
+                    "type": "string"
+                },
+                "airline_id": {
+                    "description": "Airline - Office Code",
+                    "type": "string"
+                },
+                "ata_date": {
+                    "description": "Actual Time of Arrival",
+                    "type": "string"
+                },
+                "atd_date": {
+                    "description": "Actual Time of Departure",
+                    "type": "string"
+                },
+                "awb_currency_code": {
+                    "type": "string"
+                },
+                "booking_code": {
+                    "type": "string"
+                },
+                "buyer_id": {
+                    "description": "Buyer - Office Code",
+                    "type": "string"
+                },
+                "carrier_destination_id": {
+                    "description": "Carrier Destination - Office Code",
+                    "type": "string"
+                },
+                "carrier_document_code": {
+                    "type": "string"
+                },
+                "carrier_origin_id": {
+                    "description": "Carrier Origin - Office Code",
+                    "type": "string"
+                },
+                "ce_merchant_code": {
+                    "type": "string"
+                },
+                "collect_date": {
+                    "type": "string"
+                },
+                "coloader_id": {
+                    "description": "Coloader - Office Code",
+                    "type": "string"
+                },
+                "consignee_contact_id": {
+                    "type": "string"
+                },
+                "consignee_id": {
+                    "description": "Consignee - Office Code",
+                    "type": "string"
+                },
+                "consolidation_type": {
+                    "$ref": "#/definitions/ConsolidationTypeEnum"
+                },
+                "cubic": {
+                    "description": "m3",
+                    "type": "number"
+                },
+                "currency_goods_code": {
+                    "type": "string"
+                },
+                "custom_broker_contact_id": {
+                    "type": "string"
+                },
+                "custom_broker_id": {
+                    "description": "Custom Broker - Office Code",
+                    "type": "string"
+                },
+                "customer_contact_id": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "description": "Customer - Office Code",
+                    "type": "string"
+                },
+                "customer_reference_code": {
+                    "type": "string"
+                },
+                "delivery_date": {
+                    "type": "string"
+                },
+                "destination_code": {
+                    "description": "Destination - PORT/AIRPORT CODE",
+                    "type": "string"
+                },
+                "dre_code": {
+                    "type": "string"
+                },
+                "driver_id": {
+                    "type": "string"
+                },
+                "eta_date": {
+                    "description": "Estimated Time of Arrival",
+                    "type": "string"
+                },
+                "etd_date": {
+                    "description": "Estimated Time of Departure",
+                    "type": "string"
+                },
+                "etx_date": {
+                    "type": "string"
+                },
+                "free_time_demurrage_carrier": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "free_time_demurrage_customer": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "free_time_detention_carrier": {
+                    "type": "integer"
+                },
+                "free_time_detention_customer": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "freight_type_code": {
+                    "type": "string"
+                },
+                "goods": {
+                    "type": "number"
+                },
+                "import_license_type": {
+                    "$ref": "#/definitions/ImportLicenseTypeEnum"
+                },
+                "incoterm_code": {
+                    "type": "string"
+                },
+                "inside_sales_id": {
+                    "type": "string"
+                },
+                "internal_reference_code": {
+                    "type": "string"
+                },
+                "is_agent_contract": {
+                    "type": "boolean"
+                },
+                "is_courier": {
+                    "type": "boolean"
+                },
+                "is_direct_voyage_fly": {
+                    "type": "boolean"
+                },
+                "is_routing_order": {
+                    "type": "boolean"
+                },
+                "min_buy": {
+                    "type": "number"
+                },
+                "min_sell": {
+                    "type": "number"
+                },
+                "modality_type": {
+                    "$ref": "#/definitions/ProcessModalityTypeEnum"
+                },
+                "notify_id": {
+                    "description": "Notify - Office Code",
+                    "type": "string"
+                },
+                "office_code": {
+                    "type": "string"
+                },
+                "office_commercial_id": {
+                    "type": "string"
+                },
+                "office_redestination_id": {
+                    "description": "Office Redestination -Office Code",
+                    "type": "string"
+                },
+                "operation_type": {
+                    "$ref": "#/definitions/ProcessOperationTypeEnum"
+                },
+                "origin_code": {
+                    "description": "Origin - PORT/AIRPORT CODE",
+                    "type": "string"
+                },
+                "parent_code": {
+                    "description": "Parent process code",
+                    "type": "string"
+                },
+                "ppcc_type": {
+                    "$ref": "#/definitions/PrePaidCollectTypeEnum"
+                },
+                "process_code": {
+                    "type": "string"
+                },
+                "process_date": {
+                    "type": "string"
+                },
+                "process_status": {
+                    "$ref": "#/definitions/ProcessStatusEnum"
+                },
+                "road_carrier_id": {
+                    "description": "Road Carrier -Office Code",
+                    "type": "string"
+                },
+                "ruc_code": {
+                    "type": "string"
+                },
+                "salesman2_id": {
+                    "type": "string"
+                },
+                "salesman_id": {
+                    "type": "string"
+                },
+                "service_type_id": {
+                    "type": "string"
+                },
+                "shipper_contact_id": {
+                    "type": "string"
+                },
+                "shipper_id": {
+                    "description": "Shipper - Office Code",
+                    "type": "string"
+                },
+                "sub_agent_id": {
+                    "description": "Sub Agent - Office Code",
+                    "type": "string"
+                },
+                "sub_status_id": {
+                    "type": "string"
+                },
+                "transit_time": {
+                    "type": "integer"
+                },
+                "user_operation2_id": {
+                    "type": "string"
+                },
+                "user_operation_id": {
+                    "type": "string"
+                },
+                "vehicle_id": {
+                    "type": "string"
+                },
+                "vehicle_trailer_id": {
+                    "type": "string"
+                },
+                "vessel_imo_code": {
+                    "description": "Vessel IMO Code",
+                    "type": "string"
+                },
+                "via_object": {
+                    "description": "Via - PORT/AIRPORT CODE",
+                    "type": "string"
+                },
+                "voyage_fly_code": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "number"
+                }
+            }
+        },
+        "ProcessModalityTypeEnum": {
+            "type": "string",
+            "enum": [
+                "AIR",
+                "SEA",
+                "GROUND",
+                "COURIER",
+                "SERVICE",
+                "MULTIMODAL"
+            ],
+            "x-enum-varnames": [
+                "ProcessModalityTypeAir",
+                "ProcessModalityTypeSea",
+                "ProcessModalityTypeGround",
+                "ProcessModalityTypeCourier",
+                "ProcessModalityTypeService",
+                "ProcessModalityTypeMultimodal"
+            ]
+        },
+        "ProcessOperationTypeEnum": {
+            "type": "string",
+            "enum": [
+                "IMPORT",
+                "EXPORT",
+                "OTHER",
+                "NATIONAL"
+            ],
+            "x-enum-varnames": [
+                "ProcessOperationTypeImport",
+                "ProcessOperationTypeExport",
+                "ProcessOperationTypeOther",
+                "ProcessOperationTypeNational"
+            ]
+        },
+        "ProcessRequestPostInput": {
+            "type": "object",
+            "required": [
+                "freight_type_code",
+                "incoterm_code",
+                "office_code"
+            ],
+            "properties": {
+                "agent_id": {
+                    "description": "Agent - Office Code",
+                    "type": "string"
+                },
+                "agent_remittance_contact_id": {
+                    "type": "string"
+                },
+                "agent_remittance_id": {
+                    "type": "string"
+                },
+                "airline_id": {
+                    "description": "Airline - Office Code",
+                    "type": "string"
+                },
+                "ata_date": {
+                    "description": "Actual Time of Arrival",
+                    "type": "string",
+                    "default": "2099-01-01T00:00:00-0300"
+                },
+                "atd_date": {
+                    "description": "Actual Time of Departure",
+                    "type": "string",
+                    "default": "2099-01-01T00:00:00-0300"
+                },
+                "awb_currency_code": {
+                    "type": "string"
+                },
+                "booking_code": {
+                    "type": "string"
+                },
+                "buyer_id": {
+                    "description": "Buyer - Office Code",
+                    "type": "string"
+                },
+                "carrier_destination_id": {
+                    "description": "Carrier Destination - Office Code",
+                    "type": "string"
+                },
+                "carrier_document_code": {
+                    "type": "string"
+                },
+                "carrier_origin_id": {
+                    "description": "Carrier Origin - Office Code",
+                    "type": "string"
+                },
+                "ce_merchant_code": {
+                    "type": "string"
+                },
+                "collect_date": {
+                    "type": "string",
+                    "default": "2099-01-01T00:00:00-0300"
+                },
+                "coloader_id": {
+                    "description": "Coloader - Office Code",
+                    "type": "string"
+                },
+                "consignee_contact_id": {
+                    "type": "string"
+                },
+                "consignee_id": {
+                    "description": "Consignee - Office Code",
+                    "type": "string"
+                },
+                "consolidation_type": {
+                    "$ref": "#/definitions/ConsolidationTypeEnum"
+                },
+                "cubic": {
+                    "description": "m3",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "currency_goods_code": {
+                    "type": "string"
+                },
+                "custom_broker_contact_id": {
+                    "type": "string"
+                },
+                "custom_broker_id": {
+                    "description": "Custom Broker - Office Code",
+                    "type": "string"
+                },
+                "customer_contact_id": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "description": "Customer - Office Code",
+                    "type": "string"
+                },
+                "customer_reference_code": {
+                    "type": "string"
+                },
+                "delivery_date": {
+                    "type": "string"
+                },
+                "destination_code": {
+                    "description": "Destination - PORT/AIRPORT CODE",
+                    "type": "string"
+                },
+                "dre_code": {
+                    "type": "string"
+                },
+                "driver_id": {
+                    "type": "string"
+                },
+                "eta_date": {
+                    "description": "Estimated Time of Arrival",
+                    "type": "string",
+                    "default": "2099-01-01T00:00:00-0300"
+                },
+                "etd_date": {
+                    "description": "Estimated Time of Departure",
+                    "type": "string",
+                    "default": "2099-01-01T00:00:00-0300"
+                },
+                "etx_date": {
+                    "type": "string",
+                    "default": "2099-01-01T00:00:00-0300"
+                },
+                "free_time_demurrage_carrier": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "free_time_demurrage_customer": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "free_time_detention_carrier": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "free_time_detention_customer": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "freight_type_code": {
+                    "type": "string"
+                },
+                "goods": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "import_license_type": {
+                    "$ref": "#/definitions/ImportLicenseTypeEnum"
+                },
+                "incoterm_code": {
+                    "type": "string"
+                },
+                "inside_sales_id": {
+                    "type": "string"
+                },
+                "internal_reference_code": {
+                    "type": "string"
+                },
+                "is_agent_contract": {
+                    "type": "boolean"
+                },
+                "is_courier": {
+                    "type": "boolean"
+                },
+                "is_direct_voyage_fly": {
+                    "type": "boolean"
+                },
+                "is_routing_order": {
+                    "type": "boolean"
+                },
+                "min_buy": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "min_sell": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "modality_type": {
+                    "$ref": "#/definitions/ProcessModalityTypeEnum"
+                },
+                "notify_id": {
+                    "description": "Notify - Office Code",
+                    "type": "string"
+                },
+                "office_code": {
+                    "type": "string"
+                },
+                "office_commercial_id": {
+                    "type": "string"
+                },
+                "office_redestination_id": {
+                    "description": "Office Redestination -Office Code",
+                    "type": "string"
+                },
+                "operation_type": {
+                    "$ref": "#/definitions/ProcessOperationTypeEnum"
+                },
+                "origin_code": {
+                    "description": "Origin - PORT/AIRPORT CODE",
+                    "type": "string"
+                },
+                "parent_code": {
+                    "description": "Parent process code",
+                    "type": "string"
+                },
+                "ppcc_type": {
+                    "$ref": "#/definitions/PrePaidCollectTypeEnum"
+                },
+                "road_carrier_id": {
+                    "description": "Road Carrier -Office Code",
+                    "type": "string"
+                },
+                "ruc_code": {
+                    "type": "string"
+                },
+                "salesman2_id": {
+                    "type": "string"
+                },
+                "salesman_id": {
+                    "type": "string"
+                },
+                "service_type_id": {
+                    "type": "string"
+                },
+                "shipper_contact_id": {
+                    "type": "string"
+                },
+                "shipper_id": {
+                    "description": "Shipper - Office Code",
+                    "type": "string"
+                },
+                "sub_agent_id": {
+                    "description": "Sub Agent - Office Code",
+                    "type": "string"
+                },
+                "sub_status_id": {
+                    "type": "string"
+                },
+                "transit_time": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "user_operation2_id": {
+                    "type": "string"
+                },
+                "user_operation_id": {
+                    "type": "string"
+                },
+                "vehicle_id": {
+                    "type": "string"
+                },
+                "vehicle_trailer_id": {
+                    "type": "string"
+                },
+                "vessel_imo_code": {
+                    "description": "Vessel IMO Code",
+                    "type": "string"
+                },
+                "via_object": {
+                    "description": "Via - PORT/AIRPORT CODE",
+                    "type": "string"
+                },
+                "voyage_fly_code": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "number",
+                    "minimum": 0
+                }
+            }
+        },
+        "ProcessRequestPutInput": {
+            "type": "object",
+            "properties": {
+                "agent_id": {
+                    "description": "Agent - Office Code",
+                    "type": "string"
+                },
+                "agent_remittance_contact_id": {
+                    "type": "string"
+                },
+                "agent_remittance_id": {
+                    "type": "string"
+                },
+                "airline_id": {
+                    "description": "Airline - Office Code",
+                    "type": "string"
+                },
+                "ata_date": {
+                    "description": "Actual Time of Arrival",
+                    "type": "string"
+                },
+                "atd_date": {
+                    "description": "Actual Time of Departure",
+                    "type": "string"
+                },
+                "awb_currency_code": {
+                    "type": "string"
+                },
+                "booking_code": {
+                    "type": "string"
+                },
+                "buyer_id": {
+                    "description": "Buyer - Office Code",
+                    "type": "string"
+                },
+                "carrier_destination_id": {
+                    "description": "Carrier Destination - Office Code",
+                    "type": "string"
+                },
+                "carrier_document_code": {
+                    "type": "string"
+                },
+                "carrier_origin_id": {
+                    "description": "Carrier Origin - Office Code",
+                    "type": "string"
+                },
+                "ce_merchant_code": {
+                    "type": "string"
+                },
+                "collect_date": {
+                    "type": "string"
+                },
+                "coloader_id": {
+                    "description": "Coloader - Office Code",
+                    "type": "string"
+                },
+                "consignee_contact_id": {
+                    "type": "string"
+                },
+                "consignee_id": {
+                    "description": "Consignee - Office Code",
+                    "type": "string"
+                },
+                "consolidation_type": {
+                    "$ref": "#/definitions/ConsolidationTypeEnum"
+                },
+                "cubic": {
+                    "description": "m3",
+                    "type": "number",
+                    "minimum": 0
+                },
+                "currency_goods_code": {
+                    "type": "string"
+                },
+                "custom_broker_contact_id": {
+                    "type": "string"
+                },
+                "custom_broker_id": {
+                    "description": "Custom Broker - Office Code",
+                    "type": "string"
+                },
+                "customer_contact_id": {
+                    "type": "string"
+                },
+                "customer_id": {
+                    "description": "Customer - Office Code",
+                    "type": "string"
+                },
+                "customer_reference_code": {
+                    "type": "string"
+                },
+                "delivery_date": {
+                    "type": "string"
+                },
+                "destination_code": {
+                    "description": "Destination - PORT/AIRPORT CODE",
+                    "type": "string"
+                },
+                "dre_code": {
+                    "type": "string"
+                },
+                "driver_id": {
+                    "type": "string"
+                },
+                "eta_date": {
+                    "description": "Estimated Time of Arrival",
+                    "type": "string"
+                },
+                "etd_date": {
+                    "description": "Estimated Time of Departure",
+                    "type": "string"
+                },
+                "etx_date": {
+                    "type": "string"
+                },
+                "free_time_demurrage_carrier": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "free_time_demurrage_customer": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "free_time_detention_carrier": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "free_time_detention_customer": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "freight_type_code": {
+                    "type": "string"
+                },
+                "goods": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "import_license_type": {
+                    "$ref": "#/definitions/ImportLicenseTypeEnum"
+                },
+                "incoterm_code": {
+                    "type": "string"
+                },
+                "inside_sales_id": {
+                    "type": "string"
+                },
+                "internal_reference_code": {
+                    "type": "string"
+                },
+                "is_agent_contract": {
+                    "type": "boolean"
+                },
+                "is_courier": {
+                    "type": "boolean"
+                },
+                "is_direct_voyage_fly": {
+                    "type": "boolean"
+                },
+                "is_routing_order": {
+                    "type": "boolean"
+                },
+                "min_buy": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "min_sell": {
+                    "type": "number",
+                    "minimum": 0
+                },
+                "modality_type": {
+                    "$ref": "#/definitions/ProcessModalityTypeEnum"
+                },
+                "notify_id": {
+                    "description": "Notify - Office Code",
+                    "type": "string"
+                },
+                "office_commercial_id": {
+                    "type": "string"
+                },
+                "office_redestination_id": {
+                    "description": "Office Redestination -Office Code",
+                    "type": "string"
+                },
+                "operation_type": {
+                    "$ref": "#/definitions/ProcessOperationTypeEnum"
+                },
+                "origin_code": {
+                    "description": "Origin - PORT/AIRPORT CODE",
+                    "type": "string"
+                },
+                "ppcc_type": {
+                    "$ref": "#/definitions/PrePaidCollectTypeEnum"
+                },
+                "process_status": {
+                    "$ref": "#/definitions/ProcessStatusEnum"
+                },
+                "road_carrier_id": {
+                    "description": "Road Carrier -Office Code",
+                    "type": "string"
+                },
+                "ruc_code": {
+                    "type": "string"
+                },
+                "salesman2_id": {
+                    "type": "string"
+                },
+                "salesman_id": {
+                    "type": "string"
+                },
+                "service_type_id": {
+                    "type": "string"
+                },
+                "shipper_contact_id": {
+                    "type": "string"
+                },
+                "shipper_id": {
+                    "description": "Shipper - Office Code",
+                    "type": "string"
+                },
+                "sub_agent_id": {
+                    "description": "Sub Agent - Office Code",
+                    "type": "string"
+                },
+                "sub_status_id": {
+                    "type": "string"
+                },
+                "transit_time": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "user_operation2_id": {
+                    "type": "string"
+                },
+                "user_operation_id": {
+                    "type": "string"
+                },
+                "vehicle_id": {
+                    "type": "string"
+                },
+                "vehicle_trailer_id": {
+                    "type": "string"
+                },
+                "vessel_imo_code": {
+                    "description": "Vessel IMO Code",
+                    "type": "string"
+                },
+                "via_object": {
+                    "description": "Via - PORT/AIRPORT CODE",
+                    "type": "string"
+                },
+                "voyage_fly_code": {
+                    "type": "string"
+                },
+                "weight": {
+                    "type": "number",
+                    "minimum": 0
+                }
+            }
+        },
+        "ProcessRequestResponse": {
+            "description": "Process request response with process code created/updated on result field or error field",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "description": "error, if any, of the request",
+                    "type": "string"
+                },
+                "idOwner": {
+                    "description": "owner of the request",
+                    "type": "string"
+                },
+                "idRequest": {
+                    "description": "unique identifier of the request",
+                    "type": "string"
+                },
+                "result": {
+                    "description": "result of the request",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "status of the request",
+                    "type": "string"
+                }
+            }
+        },
+        "ProcessStatusEnum": {
+            "type": "string",
+            "enum": [
+                "OPENED",
+                "CANCELLED",
+                "DELETED",
+                "FINISHED"
+            ],
+            "x-enum-varnames": [
+                "ProcessStatusOpened",
+                "ProcessStatusCancelled",
+                "ProcessStatusDeleted",
+                "ProcessStatusFinished"
+            ]
+        }
+    },
+    "securityDefinitions": {
+        "OAuth2Application": {
+            "type": "oauth2",
+            "flow": "application",
+            "tokenUrl": "https://auth.smartcomex.io/oauth2/token"
+        }
+    }
+}
