@@ -13,6 +13,45 @@
     "host": "api.smartcomex.io",
     "basePath": "/v1",
     "paths": {
+        "/async_requests/{idRequest}": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "async_request:read"
+                        ]
+                    }
+                ],
+                "description": "Get a async request information by idRequest",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Async Requests"
+                ],
+                "summary": "Retrieve creation/update async request information",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Request unique identifier",
+                        "name": "idRequest",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/AsyncRequest"
+                        }
+                    }
+                }
+            }
+        },
         "/contacts": {
             "get": {
                 "security": [
@@ -30,9 +69,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Contact"
+                    "Contacts"
                 ],
-                "summary": "Contact list",
+                "summary": "Contacts list",
                 "parameters": [
                     {
                         "type": "string",
@@ -141,7 +180,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Office"
+                    "Offices"
                 ],
                 "summary": "Offices list",
                 "parameters": [
@@ -193,7 +232,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Office"
+                    "Offices"
                 ],
                 "summary": "Organization's offices list",
                 "parameters": [
@@ -245,7 +284,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Office"
+                    "Offices"
                 ],
                 "summary": "Retrieve a office",
                 "parameters": [
@@ -267,15 +306,16 @@
                 }
             }
         },
-        "/process_request": {
-            "put": {
+        "/process/{process_code}/charges": {
+            "get": {
                 "security": [
                     {
                         "OAuth2Application": [
-                            "process_request:write"
+                            "process:read"
                         ]
                     }
                 ],
+                "description": "Get a list of process charges",
                 "consumes": [
                     "application/json"
                 ],
@@ -283,17 +323,84 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Process Request"
+                    "Process Charges"
                 ],
-                "summary": "Add a process update request",
+                "summary": "Process charges list",
                 "parameters": [
                     {
-                        "description": "Process update request",
+                        "type": "string",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 10,
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 0,
+                        "type": "integer",
+                        "default": 0,
+                        "example": 0,
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ProcessCharge"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:write"
+                        ]
+                    }
+                ],
+                "description": "Update process charges in a process",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process Charges"
+                ],
+                "summary": "[Async] Update process charges",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Process charge update request",
                         "name": "request_body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ProcessRequestPutInput"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ProcessChargeRequestPutInput"
+                            }
                         }
                     }
                 ],
@@ -301,7 +408,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ProcessRequestResponse"
+                            "$ref": "#/definitions/AsyncRequest"
                         }
                     }
                 }
@@ -310,10 +417,11 @@
                 "security": [
                     {
                         "OAuth2Application": [
-                            "process_request:write"
+                            "process:write"
                         ]
                     }
                 ],
+                "description": "Add process charges in a process",
                 "consumes": [
                     "application/json"
                 ],
@@ -321,17 +429,27 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Process Request"
+                    "Process Charges"
                 ],
-                "summary": "Add a process creation request",
+                "summary": "[Async] Add process charges",
                 "parameters": [
                     {
-                        "description": "Process creation request",
+                        "type": "string",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Process charge creation request",
                         "name": "request_body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ProcessRequestPostInput"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ProcessChargeRequestPostInput"
+                            }
                         }
                     }
                 ],
@@ -339,22 +457,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ProcessRequestResponse"
+                            "$ref": "#/definitions/AsyncRequest"
                         }
                     }
                 }
             }
         },
-        "/process_requests/{idRequest}": {
+        "/process/{process_code}/charges/{process_charge_id}": {
             "get": {
                 "security": [
                     {
                         "OAuth2Application": [
-                            "process_request:read"
+                            "process:read"
                         ]
                     }
                 ],
-                "description": "Get a process request information by idRequest",
+                "description": "Get a process charge by id",
                 "consumes": [
                     "application/json"
                 ],
@@ -362,14 +480,21 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Process Request"
+                    "Process Charges"
                 ],
-                "summary": "Retrieve a process creation/update request",
+                "summary": "Process charge by id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Request unique identifier",
-                        "name": "idRequest",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Process charge id",
+                        "name": "process_charge_id",
                         "in": "path",
                         "required": true
                     }
@@ -378,7 +503,210 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/ProcessRequestResponse"
+                            "$ref": "#/definitions/ProcessCharge"
+                        }
+                    }
+                }
+            }
+        },
+        "/process/{process_code}/volumes": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:read"
+                        ]
+                    }
+                ],
+                "description": "Get a list of process volumes",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process Volumes"
+                ],
+                "summary": "Process volumes list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "maximum": 50,
+                        "minimum": 1,
+                        "type": "integer",
+                        "default": 10,
+                        "example": 10,
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "minimum": 0,
+                        "type": "integer",
+                        "default": 0,
+                        "example": 0,
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ProcessVolume"
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:write"
+                        ]
+                    }
+                ],
+                "description": "Update process volumes in a process",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process Volumes"
+                ],
+                "summary": "[Async] Update process volumes",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Process volume update request",
+                        "name": "request_body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ProcessVolumeRequestPutInput"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/AsyncRequest"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:write"
+                        ]
+                    }
+                ],
+                "description": "Add process volumes in a process",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process Volumes"
+                ],
+                "summary": "[Async] Add process volumes",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Process volume creation request",
+                        "name": "request_body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ProcessVolumeRequestPostInput"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/AsyncRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/process/{process_code}/volumes/{process_volume_id}": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:read"
+                        ]
+                    }
+                ],
+                "description": "Get a process volume by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Process Volumes"
+                ],
+                "summary": "Process volume by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Process volume id",
+                        "name": "process_volume_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ProcessVolume"
                         }
                     }
                 }
@@ -401,7 +729,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Process"
+                    "Processes"
                 ],
                 "summary": "Processes list",
                 "parameters": [
@@ -568,6 +896,44 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:write"
+                        ]
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Processes"
+                ],
+                "summary": "[Async] Request process creation",
+                "parameters": [
+                    {
+                        "description": "Process creation input",
+                        "name": "request_body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProcessRequestPostInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/AsyncRequest"
+                        }
+                    }
+                }
             }
         },
         "/processes/{process_code}": {
@@ -587,7 +953,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Process"
+                    "Processes"
                 ],
                 "summary": "Retrieve a process",
                 "parameters": [
@@ -608,10 +974,157 @@
                         }
                     }
                 }
+            },
+            "put": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:write"
+                        ]
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Processes"
+                ],
+                "summary": "[Async] Request process update",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Process update input",
+                        "name": "request_body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProcessRequestPutInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/AsyncRequest"
+                        }
+                    }
+                }
             }
         }
     },
     "definitions": {
+        "AsyncRequest": {
+            "description": "Async request information",
+            "type": "object",
+            "properties": {
+                "entity": {
+                    "description": "entity name",
+                    "type": "string",
+                    "example": "PROCESS"
+                },
+                "error": {
+                    "description": "request error, if any",
+                    "type": "string"
+                },
+                "idRequest": {
+                    "description": "request unique identifier",
+                    "type": "string",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                },
+                "idRequester": {
+                    "description": "requester id",
+                    "type": "string",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                },
+                "result": {
+                    "description": "result of the request"
+                },
+                "status": {
+                    "description": "request status",
+                    "type": "string",
+                    "example": "SUCCESS"
+                }
+            }
+        },
+        "CalculationTypeEnum": {
+            "type": "string",
+            "enum": [
+                "PER_CNTR",
+                "PER_DOCUMENT",
+                "FIXED_PRICE",
+                "PER_KG_CM3",
+                "PER_KG_CM3_5000",
+                "PER_KG_CM3_3000",
+                "WEIGHT_CUBED",
+                "PCT_FREIGHT",
+                "PCT_GOODS_VALUE",
+                "PCT_COSHIPMENT_VLTOTAL",
+                "PCT_TOTAL",
+                "PER_QUANTITY",
+                "PER_TEU",
+                "PER_TONS_M3",
+                "PER_KG",
+                "PER_TON",
+                "PCT_CUSTOMIZED",
+                "PER_EQUIPMENT",
+                "PCT_GOODS_AND_CHARGES",
+                "SECURITY",
+                "PER_TRUCK",
+                "PER_COSHIPMENT",
+                "SELECTED_SHIPMENTS",
+                "DAILY_STORAGE",
+                "PER_COSHIPMENT_CONFORME",
+                "PER_COSHIPMENT_NON_CONFORME",
+                "PER_INVOICE",
+                "PER_COURIER_TARIFF",
+                "PCT_COSHIPMENT_TAXES_AND_FINES",
+                "PCT_NF_VALUE",
+                "TAXES"
+            ],
+            "x-enum-varnames": [
+                "CalculationTypePerCntr",
+                "CalculationTypePerDocument",
+                "CalculationTypeFixedPrice",
+                "CalculationTypePerKgCm3f6000",
+                "CalculationTypePerKgCm3f5000",
+                "CalculationTypePerKgCm3f3000",
+                "CalculationTypeWeightCubed",
+                "CalculationTypePctFreight",
+                "CalculationTypePctGoodsValue",
+                "CalculationTypePctCoShipmentVlTotal",
+                "CalculationTypePctTotal",
+                "CalculationTypePerQuantity",
+                "CalculationTypePerTeu",
+                "CalculationTypePerTonsM3",
+                "CalculationTypePerKg",
+                "CalculationTypePerTon",
+                "CalculationTypePctCustomized",
+                "CalculationTypePerEquipment",
+                "CalculationTypePctGoodsAndCharges",
+                "CalculationTypeSecurity",
+                "CalculationTypePerTruck",
+                "CalculationTypePerCoShipment",
+                "CalculationTypeSelectedShipments",
+                "CalculationTypeDailyStorage",
+                "CalculationTypePerCoShipmentConforme",
+                "CalculationTypePerCoShipmentNonConforme",
+                "CalculationTypePerInvoice",
+                "CalculationTypePerCourierTariff",
+                "CalculationTypePerCoShipmentTaxesFines",
+                "CalculationTypePctNfValue",
+                "CalculationTypeTaxes"
+            ]
+        },
         "ConsolidationTypeEnum": {
             "type": "string",
             "enum": [
@@ -967,6 +1480,225 @@
                 }
             }
         },
+        "ProcessCharge": {
+            "type": "object",
+            "properties": {
+                "accountable_flag": {
+                    "type": "boolean"
+                },
+                "agent_carrier_type": {
+                    "type": "string"
+                },
+                "base_value": {
+                    "type": "number"
+                },
+                "buy_or_sell_type": {
+                    "type": "string"
+                },
+                "calculation_detail_type": {
+                    "$ref": "#/definitions/CalculationTypeEnum"
+                },
+                "calculation_type": {
+                    "$ref": "#/definitions/CalculationTypeEnum"
+                },
+                "charge_id": {
+                    "type": "string"
+                },
+                "charge_local_type": {
+                    "type": "string"
+                },
+                "charge_type": {
+                    "type": "string"
+                },
+                "charge_value": {
+                    "type": "number"
+                },
+                "commission_flag": {
+                    "type": "boolean"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "currency_exchange_code": {
+                    "type": "string"
+                },
+                "estimated_payment_date": {
+                    "type": "string"
+                },
+                "exchange_value": {
+                    "type": "number"
+                },
+                "invoice_id": {
+                    "type": "string"
+                },
+                "max_value": {
+                    "type": "number"
+                },
+                "min_value": {
+                    "type": "number"
+                },
+                "non_profit_flag": {
+                    "type": "boolean"
+                },
+                "ppcc_type": {
+                    "type": "string"
+                },
+                "print_charge_flag": {
+                    "type": "boolean"
+                },
+                "printable_name": {
+                    "type": "string"
+                },
+                "priorize_base_value_flag": {
+                    "type": "boolean"
+                },
+                "process_charge_id": {
+                    "type": "string"
+                },
+                "process_code": {
+                    "type": "string"
+                },
+                "profit_share_flag": {
+                    "type": "boolean"
+                },
+                "quantity_number": {
+                    "type": "number"
+                },
+                "supplier_code": {
+                    "type": "string"
+                },
+                "total_exchange_company_value": {
+                    "type": "number"
+                },
+                "total_exchange_office_value": {
+                    "type": "number"
+                },
+                "total_exchange_organization_value": {
+                    "type": "number"
+                },
+                "total_exchange_value": {
+                    "type": "number"
+                },
+                "total_value": {
+                    "type": "number"
+                },
+                "volume_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "ProcessChargeRequestPostInput": {
+            "type": "object",
+            "properties": {
+                "agent_carrier_type": {
+                    "type": "string"
+                },
+                "buy_or_sell_type": {
+                    "type": "string"
+                },
+                "calculation_type": {
+                    "$ref": "#/definitions/CalculationTypeEnum"
+                },
+                "charge_id": {
+                    "type": "string"
+                },
+                "charge_local_type": {
+                    "type": "string"
+                },
+                "charge_type": {
+                    "type": "string"
+                },
+                "charge_value": {
+                    "type": "number"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "exchange_value": {
+                    "type": "number"
+                },
+                "invoice_id": {
+                    "type": "string"
+                },
+                "max_value": {
+                    "type": "number"
+                },
+                "min_value": {
+                    "type": "number"
+                },
+                "ppcc_type": {
+                    "$ref": "#/definitions/PrePaidCollectTypeEnum"
+                },
+                "process_code": {
+                    "type": "string"
+                },
+                "quantity_number": {
+                    "type": "number"
+                },
+                "supplier_id": {
+                    "type": "string"
+                },
+                "volume_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "ProcessChargeRequestPutInput": {
+            "type": "object",
+            "properties": {
+                "agent_carrier_type": {
+                    "type": "string"
+                },
+                "buy_or_sell_type": {
+                    "type": "string"
+                },
+                "calculation_type": {
+                    "$ref": "#/definitions/CalculationTypeEnum"
+                },
+                "charge_id": {
+                    "type": "string"
+                },
+                "charge_local_type": {
+                    "type": "string"
+                },
+                "charge_type": {
+                    "type": "string"
+                },
+                "charge_value": {
+                    "type": "number"
+                },
+                "currency_code": {
+                    "type": "string"
+                },
+                "exchange_value": {
+                    "type": "number"
+                },
+                "invoice_id": {
+                    "type": "string"
+                },
+                "max_value": {
+                    "type": "number"
+                },
+                "min_value": {
+                    "type": "number"
+                },
+                "ppcc_type": {
+                    "$ref": "#/definitions/PrePaidCollectTypeEnum"
+                },
+                "process_charge_id": {
+                    "type": "string"
+                },
+                "quantity_number": {
+                    "type": "number"
+                },
+                "supplier_id": {
+                    "type": "string"
+                },
+                "volume_id": {
+                    "type": "string"
+                }
+            }
+        },
         "ProcessModalityTypeEnum": {
             "type": "string",
             "enum": [
@@ -1066,6 +1798,7 @@
                     "type": "string"
                 },
                 "consignee_contact_id": {
+                    "description": "Consignee - Contact Code",
                     "type": "string"
                 },
                 "consignee_id": {
@@ -1084,6 +1817,7 @@
                     "type": "string"
                 },
                 "custom_broker_contact_id": {
+                    "description": "Custom Brokwe - Contact Code",
                     "type": "string"
                 },
                 "custom_broker_id": {
@@ -1091,6 +1825,7 @@
                     "type": "string"
                 },
                 "customer_contact_id": {
+                    "description": "Customer - Contact Code",
                     "type": "string"
                 },
                 "customer_id": {
@@ -1230,6 +1965,7 @@
                     "type": "string"
                 },
                 "shipper_contact_id": {
+                    "description": "Shipper - Contact Code",
                     "type": "string"
                 },
                 "shipper_id": {
@@ -1333,6 +2069,7 @@
                     "type": "string"
                 },
                 "consignee_contact_id": {
+                    "description": "Consignee - Contact Code",
                     "type": "string"
                 },
                 "consignee_id": {
@@ -1351,6 +2088,7 @@
                     "type": "string"
                 },
                 "custom_broker_contact_id": {
+                    "description": "Custom Broker - Contact Code",
                     "type": "string"
                 },
                 "custom_broker_id": {
@@ -1358,6 +2096,7 @@
                     "type": "string"
                 },
                 "customer_contact_id": {
+                    "description": "Customer - Contact Code",
                     "type": "string"
                 },
                 "customer_id": {
@@ -1490,6 +2229,7 @@
                     "type": "string"
                 },
                 "shipper_contact_id": {
+                    "description": "Shipper - Contact Code",
                     "type": "string"
                 },
                 "shipper_id": {
@@ -1536,32 +2276,6 @@
                 }
             }
         },
-        "ProcessRequestResponse": {
-            "description": "Process request response with process code created/updated on result field or error field",
-            "type": "object",
-            "properties": {
-                "error": {
-                    "description": "error, if any, of the request",
-                    "type": "string"
-                },
-                "idOwner": {
-                    "description": "owner of the request",
-                    "type": "string"
-                },
-                "idRequest": {
-                    "description": "unique identifier of the request",
-                    "type": "string"
-                },
-                "result": {
-                    "description": "result of the request",
-                    "type": "string"
-                },
-                "status": {
-                    "description": "status of the request",
-                    "type": "string"
-                }
-            }
-        },
         "ProcessStatusEnum": {
             "type": "string",
             "enum": [
@@ -1576,6 +2290,228 @@
                 "ProcessStatusDeleted",
                 "ProcessStatusFinished"
             ]
+        },
+        "ProcessVolume": {
+            "type": "object",
+            "properties": {
+                "bl_volume_description": {
+                    "type": "string"
+                },
+                "container_code": {
+                    "type": "string"
+                },
+                "container_delivery_date": {
+                    "type": "string"
+                },
+                "container_devolution_original_date": {
+                    "type": "string"
+                },
+                "container_removal_date": {
+                    "type": "string"
+                },
+                "courier_modality_type": {
+                    "type": "string"
+                },
+                "cubic": {
+                    "type": "number"
+                },
+                "depth": {
+                    "type": "number"
+                },
+                "free_time_demurrage_carrier": {
+                    "type": "integer"
+                },
+                "free_time_demurrage_customer": {
+                    "type": "integer"
+                },
+                "free_time_detention_carrier": {
+                    "type": "integer"
+                },
+                "free_time_detention_customer": {
+                    "type": "integer"
+                },
+                "goods_description": {
+                    "type": "string"
+                },
+                "gross_weight": {
+                    "type": "number"
+                },
+                "height": {
+                    "type": "number"
+                },
+                "metric_unit_type": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "string"
+                },
+                "process_code": {
+                    "type": "string"
+                },
+                "process_volume_id": {
+                    "type": "string"
+                },
+                "ratio": {
+                    "type": "number"
+                },
+                "sales_volume_id": {
+                    "type": "string"
+                },
+                "sales_volume_parent_id": {
+                    "type": "string"
+                },
+                "seal_code": {
+                    "type": "string"
+                },
+                "tare_weight": {
+                    "type": "number"
+                },
+                "volume_id": {
+                    "type": "string"
+                },
+                "volume_quantity": {
+                    "type": "number"
+                },
+                "weight": {
+                    "type": "number"
+                },
+                "weight_type": {
+                    "type": "string"
+                },
+                "weight_unit_type": {
+                    "type": "string"
+                },
+                "width": {
+                    "type": "number"
+                }
+            }
+        },
+        "ProcessVolumeRequestPostInput": {
+            "type": "object",
+            "properties": {
+                "bl_volume_description": {
+                    "type": "string"
+                },
+                "container_code": {
+                    "type": "string"
+                },
+                "cubic": {
+                    "type": "number"
+                },
+                "depth": {
+                    "type": "number"
+                },
+                "goods_description": {
+                    "type": "string"
+                },
+                "gross_weight": {
+                    "type": "number"
+                },
+                "height": {
+                    "type": "number"
+                },
+                "metric_unit_type": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "string"
+                },
+                "process_code": {
+                    "type": "string"
+                },
+                "seal_code": {
+                    "type": "string"
+                },
+                "tare_weight": {
+                    "type": "number"
+                },
+                "volume_id": {
+                    "type": "string"
+                },
+                "volume_quantity": {
+                    "type": "number"
+                },
+                "weight": {
+                    "type": "number"
+                },
+                "weight_type": {
+                    "type": "string"
+                },
+                "weight_unit_type": {
+                    "type": "string"
+                },
+                "width": {
+                    "type": "number"
+                }
+            }
+        },
+        "ProcessVolumeRequestPutInput": {
+            "type": "object",
+            "properties": {
+                "bl_volume_description": {
+                    "type": "string"
+                },
+                "container_code": {
+                    "type": "string"
+                },
+                "cubic": {
+                    "type": "number"
+                },
+                "depth": {
+                    "type": "number"
+                },
+                "goods_description": {
+                    "type": "string"
+                },
+                "gross_weight": {
+                    "type": "number"
+                },
+                "height": {
+                    "type": "number"
+                },
+                "metric_unit_type": {
+                    "type": "string"
+                },
+                "notes": {
+                    "type": "string"
+                },
+                "parent_id": {
+                    "type": "string"
+                },
+                "process_volume_id": {
+                    "type": "string"
+                },
+                "seal_code": {
+                    "type": "string"
+                },
+                "tare_weight": {
+                    "type": "number"
+                },
+                "volume_id": {
+                    "type": "string"
+                },
+                "volume_quantity": {
+                    "type": "number"
+                },
+                "weight": {
+                    "type": "number"
+                },
+                "weight_type": {
+                    "type": "string"
+                },
+                "weight_unit_type": {
+                    "type": "string"
+                },
+                "width": {
+                    "type": "number"
+                }
+            }
         }
     },
     "securityDefinitions": {
