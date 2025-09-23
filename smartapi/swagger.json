@@ -215,58 +215,6 @@
                 }
             }
         },
-        "/offices/internal": {
-            "get": {
-                "security": [
-                    {
-                        "OAuth2Application": [
-                            "office:read"
-                        ]
-                    }
-                ],
-                "description": "Get a list of organization offices",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Offices"
-                ],
-                "summary": "Organization's offices list",
-                "parameters": [
-                    {
-                        "maximum": 50,
-                        "minimum": 1,
-                        "type": "integer",
-                        "default": 10,
-                        "example": 10,
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "minimum": 0,
-                        "type": "integer",
-                        "default": 0,
-                        "example": 0,
-                        "name": "offset",
-                        "in": "query"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/Office"
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/offices/{office_code}": {
             "get": {
                 "security": [
@@ -1027,11 +975,6 @@
             "description": "Async request information",
             "type": "object",
             "properties": {
-                "entity": {
-                    "description": "entity name",
-                    "type": "string",
-                    "example": "PROCESS"
-                },
                 "error": {
                     "description": "request error, if any",
                     "type": "string"
@@ -1053,6 +996,11 @@
                     "description": "request status",
                     "type": "string",
                     "example": "SUCCESS"
+                },
+                "task": {
+                    "description": "task name",
+                    "type": "string",
+                    "example": "PROCESS_CREATE"
                 }
             }
         },
@@ -1589,6 +1537,19 @@
         },
         "ProcessChargeRequestPostInput": {
             "type": "object",
+            "required": [
+                "buy_or_sell_type",
+                "calculation_type",
+                "charge_id",
+                "charge_type",
+                "charge_value",
+                "currency_code",
+                "exchange_value",
+                "ppcc_type",
+                "process_code",
+                "quantity_number",
+                "supplier_id"
+            ],
             "properties": {
                 "agent_carrier_type": {
                     "type": "string"
@@ -1621,10 +1582,12 @@
                     "type": "string"
                 },
                 "max_value": {
-                    "type": "number"
+                    "type": "number",
+                    "default": 0
                 },
                 "min_value": {
-                    "type": "number"
+                    "type": "number",
+                    "default": 0
                 },
                 "ppcc_type": {
                     "$ref": "#/definitions/PrePaidCollectTypeEnum"
@@ -1645,6 +1608,19 @@
         },
         "ProcessChargeRequestPutInput": {
             "type": "object",
+            "required": [
+                "buy_or_sell_type",
+                "calculation_type",
+                "charge_id",
+                "charge_type",
+                "charge_value",
+                "currency_code",
+                "exchange_value",
+                "ppcc_type",
+                "process_charge_id",
+                "quantity_number",
+                "supplier_id"
+            ],
             "properties": {
                 "agent_carrier_type": {
                     "type": "string"
@@ -1677,10 +1653,12 @@
                     "type": "string"
                 },
                 "max_value": {
-                    "type": "number"
+                    "type": "number",
+                    "default": 0
                 },
                 "min_value": {
-                    "type": "number"
+                    "type": "number",
+                    "default": 0
                 },
                 "ppcc_type": {
                     "$ref": "#/definitions/PrePaidCollectTypeEnum"
@@ -1736,9 +1714,15 @@
         "ProcessRequestPostInput": {
             "type": "object",
             "required": [
+                "destination_code",
                 "freight_type_code",
                 "incoterm_code",
-                "office_code"
+                "modality_type",
+                "office_code",
+                "operation_type",
+                "origin_code",
+                "ppcc_type",
+                "user_operation_id"
             ],
             "properties": {
                 "agent_id": {
@@ -1804,9 +1788,6 @@
                 "consignee_id": {
                     "description": "Consignee - Office Code",
                     "type": "string"
-                },
-                "consolidation_type": {
-                    "$ref": "#/definitions/ConsolidationTypeEnum"
                 },
                 "cubic": {
                     "description": "m3",
@@ -2014,6 +1995,15 @@
         },
         "ProcessRequestPutInput": {
             "type": "object",
+            "required": [
+                "freight_type_code",
+                "incoterm_code",
+                "modality_type",
+                "operation_type",
+                "ppcc_type",
+                "process_status",
+                "user_operation_id"
+            ],
             "properties": {
                 "agent_id": {
                     "description": "Agent - Office Code",
@@ -2075,9 +2065,6 @@
                 "consignee_id": {
                     "description": "Consignee - Office Code",
                     "type": "string"
-                },
-                "consolidation_type": {
-                    "$ref": "#/definitions/ConsolidationTypeEnum"
                 },
                 "cubic": {
                     "description": "m3",
@@ -2391,6 +2378,21 @@
         },
         "ProcessVolumeRequestPostInput": {
             "type": "object",
+            "required": [
+                "cubic",
+                "depth",
+                "gross_weight",
+                "height",
+                "metric_unit_type",
+                "process_code",
+                "tare_weight",
+                "volume_id",
+                "volume_quantity",
+                "weight",
+                "weight_type",
+                "weight_unit_type",
+                "width"
+            ],
             "properties": {
                 "bl_volume_description": {
                     "type": "string"
@@ -2453,6 +2455,21 @@
         },
         "ProcessVolumeRequestPutInput": {
             "type": "object",
+            "required": [
+                "cubic",
+                "depth",
+                "gross_weight",
+                "height",
+                "metric_unit_type",
+                "process_volume_id",
+                "tare_weight",
+                "volume_id",
+                "volume_quantity",
+                "weight",
+                "weight_type",
+                "weight_unit_type",
+                "width"
+            ],
             "properties": {
                 "bl_volume_description": {
                     "type": "string"
