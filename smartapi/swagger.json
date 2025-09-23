@@ -844,7 +844,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/processes/other_services": {
             "post": {
                 "security": [
                     {
@@ -862,7 +864,7 @@
                 "tags": [
                     "Processes"
                 ],
-                "summary": "[Async] Request process creation",
+                "summary": "[Async] Request process creation [other Services]",
                 "parameters": [
                     {
                         "description": "Process creation input",
@@ -870,7 +872,55 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/ProcessRequestPostInput"
+                            "$ref": "#/definitions/ProcessOtherServicesInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/AsyncRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/processes/other_services/{process_code}": {
+            "put": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "process:write"
+                        ]
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Processes"
+                ],
+                "summary": "[Async] Request process update [other Services]",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "ORGCODE-IS99010001",
+                        "description": "Process code",
+                        "name": "process_code",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Process update input",
+                        "name": "request_body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProcessOtherServicesInput"
                         }
                     }
                 ],
@@ -919,51 +969,6 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/Process"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "OAuth2Application": [
-                            "process:write"
-                        ]
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Processes"
-                ],
-                "summary": "[Async] Request process update",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Process code",
-                        "name": "process_code",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Process update input",
-                        "name": "request_body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ProcessRequestPutInput"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/AsyncRequest"
                         }
                     }
                 }
@@ -1711,17 +1716,14 @@
                 "ProcessOperationTypeNational"
             ]
         },
-        "ProcessRequestPostInput": {
+        "ProcessOtherServicesInput": {
             "type": "object",
             "required": [
                 "destination_code",
-                "freight_type_code",
-                "incoterm_code",
-                "modality_type",
                 "office_code",
-                "operation_type",
                 "origin_code",
                 "ppcc_type",
+                "service_type_id",
                 "user_operation_id"
             ],
             "properties": {
@@ -1736,7 +1738,7 @@
                     "type": "string"
                 },
                 "airline_id": {
-                    "description": "Airline - Office Code",
+                    "description": "[sub_modality_type AIR] Airline - Office Code",
                     "type": "string"
                 },
                 "ata_date": {
@@ -1749,60 +1751,15 @@
                     "type": "string",
                     "default": "2099-01-01T00:00:00-0300"
                 },
-                "awb_currency_code": {
-                    "type": "string"
-                },
-                "booking_code": {
-                    "type": "string"
-                },
-                "buyer_id": {
-                    "description": "Buyer - Office Code",
-                    "type": "string"
-                },
                 "carrier_destination_id": {
-                    "description": "Carrier Destination - Office Code",
+                    "description": "[sub_modality_type SEA] Carrier Destination - Office Code",
                     "type": "string"
                 },
                 "carrier_document_code": {
                     "type": "string"
                 },
                 "carrier_origin_id": {
-                    "description": "Carrier Origin - Office Code",
-                    "type": "string"
-                },
-                "ce_merchant_code": {
-                    "type": "string"
-                },
-                "collect_date": {
-                    "type": "string",
-                    "default": "2099-01-01T00:00:00-0300"
-                },
-                "coloader_id": {
-                    "description": "Coloader - Office Code",
-                    "type": "string"
-                },
-                "consignee_contact_id": {
-                    "description": "Consignee - Contact Code",
-                    "type": "string"
-                },
-                "consignee_id": {
-                    "description": "Consignee - Office Code",
-                    "type": "string"
-                },
-                "cubic": {
-                    "description": "m3",
-                    "type": "number",
-                    "minimum": 0
-                },
-                "currency_goods_code": {
-                    "type": "string"
-                },
-                "custom_broker_contact_id": {
-                    "description": "Custom Brokwe - Contact Code",
-                    "type": "string"
-                },
-                "custom_broker_id": {
-                    "description": "Custom Broker - Office Code",
+                    "description": "[sub_modality_type SEA] Carrier Origin - Office Code",
                     "type": "string"
                 },
                 "customer_contact_id": {
@@ -1816,17 +1773,8 @@
                 "customer_reference_code": {
                     "type": "string"
                 },
-                "delivery_date": {
-                    "type": "string"
-                },
                 "destination_code": {
                     "description": "Destination - PORT/AIRPORT CODE",
-                    "type": "string"
-                },
-                "dre_code": {
-                    "type": "string"
-                },
-                "driver_id": {
                     "type": "string"
                 },
                 "eta_date": {
@@ -1839,41 +1787,9 @@
                     "type": "string",
                     "default": "2099-01-01T00:00:00-0300"
                 },
-                "etx_date": {
-                    "type": "string",
-                    "default": "2099-01-01T00:00:00-0300"
-                },
-                "free_time_demurrage_carrier": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "free_time_demurrage_customer": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "free_time_detention_carrier": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "free_time_detention_customer": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "freight_type_code": {
-                    "type": "string"
-                },
                 "goods": {
                     "type": "number",
                     "minimum": 0
-                },
-                "import_license_type": {
-                    "$ref": "#/definitions/ImportLicenseTypeEnum"
-                },
-                "incoterm_code": {
-                    "type": "string"
-                },
-                "inside_sales_id": {
-                    "type": "string"
                 },
                 "internal_reference_code": {
                     "type": "string"
@@ -1881,29 +1797,9 @@
                 "is_agent_contract": {
                     "type": "boolean"
                 },
-                "is_courier": {
-                    "type": "boolean"
-                },
-                "is_direct_voyage_fly": {
-                    "type": "boolean"
-                },
-                "is_routing_order": {
-                    "type": "boolean"
-                },
-                "min_buy": {
+                "nf_value": {
                     "type": "number",
                     "minimum": 0
-                },
-                "min_sell": {
-                    "type": "number",
-                    "minimum": 0
-                },
-                "modality_type": {
-                    "$ref": "#/definitions/ProcessModalityTypeEnum"
-                },
-                "notify_id": {
-                    "description": "Notify - Office Code",
-                    "type": "string"
                 },
                 "office_code": {
                     "type": "string"
@@ -1911,19 +1807,8 @@
                 "office_commercial_id": {
                     "type": "string"
                 },
-                "office_redestination_id": {
-                    "description": "Office Redestination -Office Code",
-                    "type": "string"
-                },
-                "operation_type": {
-                    "$ref": "#/definitions/ProcessOperationTypeEnum"
-                },
                 "origin_code": {
                     "description": "Origin - PORT/AIRPORT CODE",
-                    "type": "string"
-                },
-                "parent_code": {
-                    "description": "Parent process code",
                     "type": "string"
                 },
                 "ppcc_type": {
@@ -1933,28 +1818,13 @@
                     "description": "Road Carrier -Office Code",
                     "type": "string"
                 },
-                "ruc_code": {
-                    "type": "string"
-                },
-                "salesman2_id": {
-                    "type": "string"
-                },
                 "salesman_id": {
                     "type": "string"
                 },
                 "service_type_id": {
                     "type": "string"
                 },
-                "shipper_contact_id": {
-                    "description": "Shipper - Contact Code",
-                    "type": "string"
-                },
-                "shipper_id": {
-                    "description": "Shipper - Office Code",
-                    "type": "string"
-                },
-                "sub_agent_id": {
-                    "description": "Sub Agent - Office Code",
+                "sub_modality_type": {
                     "type": "string"
                 },
                 "sub_status_id": {
@@ -1964,302 +1834,8 @@
                     "type": "integer",
                     "minimum": 0
                 },
-                "user_operation2_id": {
-                    "type": "string"
-                },
                 "user_operation_id": {
                     "type": "string"
-                },
-                "vehicle_id": {
-                    "type": "string"
-                },
-                "vehicle_trailer_id": {
-                    "type": "string"
-                },
-                "vessel_imo_code": {
-                    "description": "Vessel IMO Code",
-                    "type": "string"
-                },
-                "via_object": {
-                    "description": "Via - PORT/AIRPORT CODE",
-                    "type": "string"
-                },
-                "voyage_fly_code": {
-                    "type": "string"
-                },
-                "weight": {
-                    "type": "number",
-                    "minimum": 0
-                }
-            }
-        },
-        "ProcessRequestPutInput": {
-            "type": "object",
-            "required": [
-                "freight_type_code",
-                "incoterm_code",
-                "modality_type",
-                "operation_type",
-                "ppcc_type",
-                "process_status",
-                "user_operation_id"
-            ],
-            "properties": {
-                "agent_id": {
-                    "description": "Agent - Office Code",
-                    "type": "string"
-                },
-                "agent_remittance_contact_id": {
-                    "type": "string"
-                },
-                "agent_remittance_id": {
-                    "type": "string"
-                },
-                "airline_id": {
-                    "description": "Airline - Office Code",
-                    "type": "string"
-                },
-                "ata_date": {
-                    "description": "Actual Time of Arrival",
-                    "type": "string"
-                },
-                "atd_date": {
-                    "description": "Actual Time of Departure",
-                    "type": "string"
-                },
-                "awb_currency_code": {
-                    "type": "string"
-                },
-                "booking_code": {
-                    "type": "string"
-                },
-                "buyer_id": {
-                    "description": "Buyer - Office Code",
-                    "type": "string"
-                },
-                "carrier_destination_id": {
-                    "description": "Carrier Destination - Office Code",
-                    "type": "string"
-                },
-                "carrier_document_code": {
-                    "type": "string"
-                },
-                "carrier_origin_id": {
-                    "description": "Carrier Origin - Office Code",
-                    "type": "string"
-                },
-                "ce_merchant_code": {
-                    "type": "string"
-                },
-                "collect_date": {
-                    "type": "string"
-                },
-                "coloader_id": {
-                    "description": "Coloader - Office Code",
-                    "type": "string"
-                },
-                "consignee_contact_id": {
-                    "description": "Consignee - Contact Code",
-                    "type": "string"
-                },
-                "consignee_id": {
-                    "description": "Consignee - Office Code",
-                    "type": "string"
-                },
-                "cubic": {
-                    "description": "m3",
-                    "type": "number",
-                    "minimum": 0
-                },
-                "currency_goods_code": {
-                    "type": "string"
-                },
-                "custom_broker_contact_id": {
-                    "description": "Custom Broker - Contact Code",
-                    "type": "string"
-                },
-                "custom_broker_id": {
-                    "description": "Custom Broker - Office Code",
-                    "type": "string"
-                },
-                "customer_contact_id": {
-                    "description": "Customer - Contact Code",
-                    "type": "string"
-                },
-                "customer_id": {
-                    "description": "Customer - Office Code",
-                    "type": "string"
-                },
-                "customer_reference_code": {
-                    "type": "string"
-                },
-                "delivery_date": {
-                    "type": "string"
-                },
-                "destination_code": {
-                    "description": "Destination - PORT/AIRPORT CODE",
-                    "type": "string"
-                },
-                "dre_code": {
-                    "type": "string"
-                },
-                "driver_id": {
-                    "type": "string"
-                },
-                "eta_date": {
-                    "description": "Estimated Time of Arrival",
-                    "type": "string"
-                },
-                "etd_date": {
-                    "description": "Estimated Time of Departure",
-                    "type": "string"
-                },
-                "etx_date": {
-                    "type": "string"
-                },
-                "free_time_demurrage_carrier": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "free_time_demurrage_customer": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "free_time_detention_carrier": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "free_time_detention_customer": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "freight_type_code": {
-                    "type": "string"
-                },
-                "goods": {
-                    "type": "number",
-                    "minimum": 0
-                },
-                "import_license_type": {
-                    "$ref": "#/definitions/ImportLicenseTypeEnum"
-                },
-                "incoterm_code": {
-                    "type": "string"
-                },
-                "inside_sales_id": {
-                    "type": "string"
-                },
-                "internal_reference_code": {
-                    "type": "string"
-                },
-                "is_agent_contract": {
-                    "type": "boolean"
-                },
-                "is_courier": {
-                    "type": "boolean"
-                },
-                "is_direct_voyage_fly": {
-                    "type": "boolean"
-                },
-                "is_routing_order": {
-                    "type": "boolean"
-                },
-                "min_buy": {
-                    "type": "number",
-                    "minimum": 0
-                },
-                "min_sell": {
-                    "type": "number",
-                    "minimum": 0
-                },
-                "modality_type": {
-                    "$ref": "#/definitions/ProcessModalityTypeEnum"
-                },
-                "notify_id": {
-                    "description": "Notify - Office Code",
-                    "type": "string"
-                },
-                "office_commercial_id": {
-                    "type": "string"
-                },
-                "office_redestination_id": {
-                    "description": "Office Redestination -Office Code",
-                    "type": "string"
-                },
-                "operation_type": {
-                    "$ref": "#/definitions/ProcessOperationTypeEnum"
-                },
-                "origin_code": {
-                    "description": "Origin - PORT/AIRPORT CODE",
-                    "type": "string"
-                },
-                "ppcc_type": {
-                    "$ref": "#/definitions/PrePaidCollectTypeEnum"
-                },
-                "process_status": {
-                    "$ref": "#/definitions/ProcessStatusEnum"
-                },
-                "road_carrier_id": {
-                    "description": "Road Carrier -Office Code",
-                    "type": "string"
-                },
-                "ruc_code": {
-                    "type": "string"
-                },
-                "salesman2_id": {
-                    "type": "string"
-                },
-                "salesman_id": {
-                    "type": "string"
-                },
-                "service_type_id": {
-                    "type": "string"
-                },
-                "shipper_contact_id": {
-                    "description": "Shipper - Contact Code",
-                    "type": "string"
-                },
-                "shipper_id": {
-                    "description": "Shipper - Office Code",
-                    "type": "string"
-                },
-                "sub_agent_id": {
-                    "description": "Sub Agent - Office Code",
-                    "type": "string"
-                },
-                "sub_status_id": {
-                    "type": "string"
-                },
-                "transit_time": {
-                    "type": "integer",
-                    "minimum": 0
-                },
-                "user_operation2_id": {
-                    "type": "string"
-                },
-                "user_operation_id": {
-                    "type": "string"
-                },
-                "vehicle_id": {
-                    "type": "string"
-                },
-                "vehicle_trailer_id": {
-                    "type": "string"
-                },
-                "vessel_imo_code": {
-                    "description": "Vessel IMO Code",
-                    "type": "string"
-                },
-                "via_object": {
-                    "description": "Via - PORT/AIRPORT CODE",
-                    "type": "string"
-                },
-                "voyage_fly_code": {
-                    "type": "string"
-                },
-                "weight": {
-                    "type": "number",
-                    "minimum": 0
                 }
             }
         },
