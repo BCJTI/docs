@@ -111,16 +111,16 @@
                 }
             }
         },
-        "/fromtos": {
+        "/mappings": {
             "get": {
                 "security": [
                     {
                         "OAuth2Application": [
-                            "fromto:read"
+                            "read"
                         ]
                     }
                 ],
-                "description": "Get a list of FromTo conversions",
+                "description": "Get a list of mappings",
                 "consumes": [
                     "application/json"
                 ],
@@ -128,9 +128,9 @@
                     "application/json"
                 ],
                 "tags": [
-                    "FromTo"
+                    "Mappings"
                 ],
-                "summary": "FromTo list",
+                "summary": "Mappings list",
                 "parameters": [
                     {
                         "maximum": 50,
@@ -156,7 +156,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/FromTo"
+                                "$ref": "#/definitions/Mapping"
                             }
                         }
                     }
@@ -199,6 +199,12 @@
                         "default": 0,
                         "example": 0,
                         "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Tax ID (ex.: CNPJ).",
+                        "name": "tax_id",
                         "in": "query"
                     }
                 ],
@@ -981,8 +987,7 @@
             "type": "object",
             "properties": {
                 "error": {
-                    "description": "request error, if any",
-                    "type": "string"
+                    "description": "request error, if any"
                 },
                 "idRequest": {
                     "description": "request unique identifier",
@@ -1109,7 +1114,22 @@
                 }
             }
         },
-        "FromTo": {
+        "ImportLicenseTypeEnum": {
+            "type": "string",
+            "enum": [
+                "DEFERRED",
+                "NOTREQUIRED",
+                "REFUSED",
+                "AWAITING_CONFIRMATION"
+            ],
+            "x-enum-varnames": [
+                "ImportLicenseTypeDeferred",
+                "ImportLicenseTypeNotRequired",
+                "ImportLicenseTypeRefused",
+                "ImportLicenseTypeAwaitingConfirmation"
+            ]
+        },
+        "Mapping": {
             "type": "object",
             "properties": {
                 "entity": {
@@ -1130,21 +1150,6 @@
                 }
             }
         },
-        "ImportLicenseTypeEnum": {
-            "type": "string",
-            "enum": [
-                "DEFERRED",
-                "NOTREQUIRED",
-                "REFUSED",
-                "AWAITING_CONFIRMATION"
-            ],
-            "x-enum-varnames": [
-                "ImportLicenseTypeDeferred",
-                "ImportLicenseTypeNotRequired",
-                "ImportLicenseTypeRefused",
-                "ImportLicenseTypeAwaitingConfirmation"
-            ]
-        },
         "Office": {
             "type": "object",
             "properties": {
@@ -1152,6 +1157,9 @@
                     "type": "string"
                 },
                 "office_name": {
+                    "type": "string"
+                },
+                "tax_id": {
                     "type": "string"
                 }
             }
@@ -1260,9 +1268,13 @@
                 "delivery_date": {
                     "type": "string"
                 },
-                "destination_code": {
-                    "description": "Destination - PORT/AIRPORT CODE",
-                    "type": "string"
+                "destination": {
+                    "description": "Destination - PORT/AIRPORT/Location Name/Country",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.TransportObject"
+                        }
+                    ]
                 },
                 "dre_code": {
                     "type": "string"
@@ -1352,9 +1364,13 @@
                 "operation_type": {
                     "$ref": "#/definitions/ProcessOperationTypeEnum"
                 },
-                "origin_code": {
-                    "description": "Origin - PORT/AIRPORT CODE",
-                    "type": "string"
+                "origin": {
+                    "description": "Origin - PORT/AIRPORT/Location Name/Country",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.TransportObject"
+                        }
+                    ]
                 },
                 "parent_code": {
                     "description": "Parent process code",
@@ -1422,8 +1438,12 @@
                     "type": "string"
                 },
                 "via_object": {
-                    "description": "Via - PORT/AIRPORT CODE",
-                    "type": "string"
+                    "description": "Via - PORT/AIRPORT/Location Name/Country",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/model.TransportObject"
+                        }
+                    ]
                 },
                 "voyage_fly_code": {
                     "type": "string"
@@ -1719,9 +1739,10 @@
         "ProcessOtherServicesInput": {
             "type": "object",
             "required": [
-                "destination_code",
+                "destination_name",
+                "incoterm_code",
                 "office_code",
-                "origin_code",
+                "origin_name",
                 "ppcc_type",
                 "service_type_id",
                 "user_operation_id"
@@ -1773,8 +1794,8 @@
                 "customer_reference_code": {
                     "type": "string"
                 },
-                "destination_code": {
-                    "description": "Destination - PORT/AIRPORT CODE",
+                "destination_name": {
+                    "description": "Destination",
                     "type": "string"
                 },
                 "eta_date": {
@@ -1790,6 +1811,9 @@
                 "goods": {
                     "type": "number",
                     "minimum": 0
+                },
+                "incoterm_code": {
+                    "type": "string"
                 },
                 "internal_reference_code": {
                     "type": "string"
@@ -1807,8 +1831,8 @@
                 "office_commercial_id": {
                     "type": "string"
                 },
-                "origin_code": {
-                    "description": "Origin - PORT/AIRPORT CODE",
+                "origin_name": {
+                    "description": "Origin",
                     "type": "string"
                 },
                 "ppcc_type": {
@@ -2103,6 +2127,23 @@
                 },
                 "width": {
                     "type": "number"
+                }
+            }
+        },
+        "model.TransportObject": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
                 }
             }
         }
