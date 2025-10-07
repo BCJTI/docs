@@ -10,7 +10,7 @@
         },
         "version": "0.0.1"
     },
-    "host": "api.smartcomex.io",
+    "host": "connect.smartcomex.io",
     "basePath": "/v1",
     "paths": {
         "/async_requests/{idRequest}": {
