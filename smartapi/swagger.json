@@ -13,45 +13,6 @@
     "host": "connect.smartcomex.io",
     "basePath": "/v1",
     "paths": {
-        "/async_requests/{idRequest}": {
-            "get": {
-                "security": [
-                    {
-                        "OAuth2Application": [
-                            "async_request:read"
-                        ]
-                    }
-                ],
-                "description": "Get a async request information by idRequest",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Async Requests"
-                ],
-                "summary": "Retrieve creation/update async request information",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Request unique identifier",
-                        "name": "idRequest",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/AsyncRequest"
-                        }
-                    }
-                }
-            }
-        },
         "/contacts": {
             "get": {
                 "security": [
@@ -362,7 +323,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/AsyncRequest"
+                            "$ref": "#/definitions/TaskStatus"
                         }
                     }
                 }
@@ -411,7 +372,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/AsyncRequest"
+                            "$ref": "#/definitions/TaskStatus"
                         }
                     }
                 }
@@ -565,7 +526,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/AsyncRequest"
+                            "$ref": "#/definitions/TaskStatus"
                         }
                     }
                 }
@@ -614,7 +575,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/AsyncRequest"
+                            "$ref": "#/definitions/TaskStatus"
                         }
                     }
                 }
@@ -886,7 +847,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/AsyncRequest"
+                            "$ref": "#/definitions/TaskStatus"
                         }
                     }
                 }
@@ -934,7 +895,7 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/AsyncRequest"
+                            "$ref": "#/definitions/TaskStatus"
                         }
                     }
                 }
@@ -979,41 +940,48 @@
                     }
                 }
             }
+        },
+        "/task_status/{idTask}": {
+            "get": {
+                "security": [
+                    {
+                        "OAuth2Application": [
+                            "task_status:read"
+                        ]
+                    }
+                ],
+                "description": "Get a task status and details by idTask",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Task Status"
+                ],
+                "summary": "Retrieve creation/update task status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Task unique identifier",
+                        "name": "idTask",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/TaskStatus"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "AsyncRequest": {
-            "description": "Async request information",
-            "type": "object",
-            "properties": {
-                "error": {
-                    "description": "request error, if any"
-                },
-                "idRequest": {
-                    "description": "request unique identifier",
-                    "type": "string",
-                    "example": "123e4567-e89b-12d3-a456-426614174000"
-                },
-                "idRequester": {
-                    "description": "requester id",
-                    "type": "string",
-                    "example": "123e4567-e89b-12d3-a456-426614174000"
-                },
-                "result": {
-                    "description": "result of the request"
-                },
-                "status": {
-                    "description": "request status",
-                    "type": "string",
-                    "example": "SUCCESS"
-                },
-                "task": {
-                    "description": "task name",
-                    "type": "string",
-                    "example": "PROCESS_CREATE"
-                }
-            }
-        },
         "CalculationTypeEnum": {
             "type": "string",
             "enum": [
@@ -1395,10 +1363,10 @@
                 "ruc_code": {
                     "type": "string"
                 },
-                "salesman2_id": {
+                "salesman2_email": {
                     "type": "string"
                 },
-                "salesman_id": {
+                "salesman_email": {
                     "type": "string"
                 },
                 "service_type_id": {
@@ -1421,10 +1389,10 @@
                 "transit_time": {
                     "type": "integer"
                 },
-                "user_operation2_id": {
+                "user_operation2_email": {
                     "type": "string"
                 },
-                "user_operation_id": {
+                "user_operation_email": {
                     "type": "string"
                 },
                 "vehicle_id": {
@@ -1745,7 +1713,7 @@
                 "origin_name",
                 "ppcc_type",
                 "service_type_id",
-                "user_operation_id"
+                "user_operation_email"
             ],
             "properties": {
                 "agent_id": {
@@ -1842,7 +1810,7 @@
                     "description": "Road Carrier -Office Code",
                     "type": "string"
                 },
-                "salesman_id": {
+                "salesman_email": {
                     "type": "string"
                 },
                 "service_type_id": {
@@ -1858,7 +1826,7 @@
                     "type": "integer",
                     "minimum": 0
                 },
-                "user_operation_id": {
+                "user_operation_email": {
                     "type": "string"
                 }
             }
@@ -2127,6 +2095,38 @@
                 },
                 "width": {
                     "type": "number"
+                }
+            }
+        },
+        "TaskStatus": {
+            "description": "Api task status and details",
+            "type": "object",
+            "properties": {
+                "error": {
+                    "description": "request error, if any"
+                },
+                "idOwner": {
+                    "description": "requester id",
+                    "type": "string",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                },
+                "idTask": {
+                    "description": "request unique identifier",
+                    "type": "string",
+                    "example": "123e4567-e89b-12d3-a456-426614174000"
+                },
+                "result": {
+                    "description": "result of the request"
+                },
+                "status": {
+                    "description": "request status",
+                    "type": "string",
+                    "example": "SUCCESS"
+                },
+                "task": {
+                    "description": "task name",
+                    "type": "string",
+                    "example": "PROCESS_CREATE"
                 }
             }
         },
