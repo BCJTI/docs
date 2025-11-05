@@ -49,10 +49,10 @@ Os campos `sttaxsend` e `sttaxprocess` são status relacionados à geração de 
 
 ### Status Possíveis:
 
-#### 1. Ambos PENDING
+#### 1. Ambos AWAITING
 ```
-sttaxsend = 'PENDING'
-sttaxprocess = 'PENDING'
+sttaxsend = 'AWAITING'
+sttaxprocess = 'AWAITING'
 ```
 - **Significado**: Está tentando enviar para a Sefaz para gerar a GNRE
 - **Job responsável**: 
